@@ -13,6 +13,10 @@ namespace EmployeeDatabase
             return Salary / 12;
         }
     }
+    // class EmployeeDatabase 
+    // {
+    //   private List<Employee> employees = new List<Employee>();
+    // }
 
     class Program
     {
@@ -62,72 +66,71 @@ namespace EmployeeDatabase
                 Console.WriteLine();
                 Console.Write("What do you want to do? (A)dd an employee or (D)elete an employee or (S)how all the employees or (F)ind an employee or (Q)uit: ");
                 var choice = Console.ReadLine().ToUpper();
-                if (choice == "Q")
-                {          // They said quit, so set our keepGoing to false          
-                    keepGoing = false;
-                }
-                else if (choice == "D")
+                switch (choice)
                 {
-                    var name = PromptForString("What name are you looking for: ");
-                    Employee foundEmployee = employees.FirstOrDefault(employee => employee.Name == name);
-                    if (foundEmployee == null)
-                    {
-                        Console.WriteLine("Nobody by that name to delete.");
-                    }
-                    else
-                    {
-                        employees.Remove(foundEmployee);
-                        Console.WriteLine($"Goodbye {foundEmployee.Name}");
-                    }
+                    case "Q":
+                        keepGoing = false;
+                        break;
+
+                    case "U":
+                        var nameToUpdate = PromptForString("What name are you looking for: ");
+                        Employee foundEmployeeToUpdate = employees.FirstOrDefault(employee => employee.Name == nameToUpdate);
+                        if (foundEmployeeToUpdate == null)
+                        {
+                            Console.WriteLine("Nobody by that name to update.");
+                        }
+                        else
+                        {
+                            employees.Remove(foundEmployeeToUpdate);
+                            var newSalary = PromptForInteger($"What is {nameToUpdate}'s salary");
+                            foundEmployeeToUpdate.Salary = newSalary;
+                        }
+                        break;
+                    case "D":
+                        var nameToDelete = PromptForString("What name are you looking for: ");
+                        Employee foundEmployeeToDelete = employees.FirstOrDefault(employee => employee.Name == nameToDelete);
+                        if (foundEmployeeToDelete == null)
+                        {
+                            Console.WriteLine("Nobody by that name to delete.");
+                        }
+                        else
+                        {
+                            employees.Remove(foundEmployeeToDelete);
+                            Console.WriteLine($"Goodbye {foundEmployeeToDelete.Name}");
+                        }
+                        break;
+                    case "S":
+                        // Loop through each employee          
+                        foreach (var employee in employees)
+                        {
+                            // And print details            
+                            Console.WriteLine($"{employee.Name} is in department {employee.Department} and makes ${employee.Salary}");
+                        }
+                        break;
+                    case "F":
+                        var name = PromptForString("What name are you looking for: ");
+                        Employee foundEmployee = employees.FirstOrDefault(employee => employee.Name == name);
+
+
+
+                        // Employee foundEmployee = null;
+                        // foreach (var employee in employees)
+                        // {            // If the name matches            
+                        //     if (employee.Name == name)
+                        //     {
+                        //         foundEmployee = employee;
+                        //     }
+                        // }
+                        if (foundEmployee == null)
+                        {
+                            Console.WriteLine("No match found.");
+                        }
+                        else
+                        {
+                            Console.WriteLine($"{foundEmployee.Name} is in department {foundEmployee.Department} and makes ${foundEmployee.Salary}");
+                        }
+                        break;
                 }
-                else if (choice == "S")
-                {
-                    // Loop through each employee          
-                    foreach (var employee in employees)
-                    {
-                        // And print details            
-                        Console.WriteLine($"{employee.Name} is in department {employee.Department} and makes ${employee.Salary}");
-                    }
-
-                }
-                else if (choice == "F")
-                {
-                    var name = PromptForString("What name are you looking for: ");
-                    Employee foundEmployee = employees.FirstOrDefault(employee => employee.Name == name);
-
-
-
-                    // Employee foundEmployee = null;
-                    // foreach (var employee in employees)
-                    // {            // If the name matches            
-                    //     if (employee.Name == name)
-                    //     {
-                    //         foundEmployee = employee;
-                    //     }
-                    // }
-                    if (foundEmployee == null)
-                    {
-                        Console.WriteLine("No match found.");
-                    }
-                    else
-                    {
-                        Console.WriteLine($"{foundEmployee.Name} is in department {foundEmployee.Department} and makes ${foundEmployee.Salary}");
-                    }
-                }
-                else
-                {
-                    var employee = new Employee();
-                    employee.Name = PromptForString("What is your name? ");
-                    employee.Department = PromptForInteger("What is your department number? ");
-                    employee.Salary = PromptForInteger("What is your yearly salary (in dollars)? ");
-
-                    Console.WriteLine($"Hello, {employee.Name} you make {employee.MonthlySalary()} dollars per month.");
-                    employees.Add(employee);
-                }
-
-
-
-
             }
         }
     }
